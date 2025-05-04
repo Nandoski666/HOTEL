@@ -27,13 +27,14 @@ public class ValidarIngreso implements Serializable {
         // Admin (predefinido)
         if ("admin".equals(username) && "admin".equals(password)) {
             sessionMap.put("user", "admin");
-            return "clientes/listaClientes.xhtml?faces-redirect=true";
+            // Navegación implícita: carpeta + nombre sin extensión
+            return "clientes/listaClientes?faces-redirect=true";
         }
 
         // Cliente genérico (predefinido)
         else if ("cliente".equals(username) && "cliente".equals(password)) {
             sessionMap.put("user", "cliente");
-            return "reservas/listaReservas.xhtml?faces-redirect=true";
+            return "reservas/listaReservas?faces-redirect=true";
         }
 
         // Clientes registrados (correo y clave)
@@ -42,8 +43,9 @@ public class ValidarIngreso implements Serializable {
             for (Cliente c : clientes) {
                 if (c.getEmail().equalsIgnoreCase(username) && c.getClave().equals(password)) {
                     sessionMap.put("user", c.getNombre());
-                    sessionMap.put("cliente", c); // ← ESTA LÍNEA es CLAVE
-                    return "resebnxhtml?faces-redirect=true";
+                    sessionMap.put("cliente", c);
+                    // Aquí redirigimos al listado de reservas del cliente
+                    return "reservas/listaReservas?faces-redirect=true";
                 }
             }
             context.addMessage(null,
@@ -53,15 +55,19 @@ public class ValidarIngreso implements Serializable {
     }
 
     public String logout() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().invalidateSession();
-        return "/principal.xhtml?faces-redirect=true"; // Asegúrate de usar ruta absoluta con slash
+        FacesContext.getCurrentInstance()
+                    .getExternalContext()
+                    .invalidateSession();
+        // Con slash inicial: navegación absoluta a /principal.xhtml
+        return "/principal?faces-redirect=true";
     }
-
 
     public String registrarme() {
-        return "registroNuevoCliente.xhtml?faces-redirect=true";
+        // Página para registro de nuevo cliente
+        return "registroNuevoCliente?faces-redirect=true";
     }
+
+    // Getters y setters
 
     public String getUsername() {
         return username;

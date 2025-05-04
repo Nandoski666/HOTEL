@@ -7,18 +7,34 @@
 
 <h:head>
     <title>Mi Perfil</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .menu-col {
+            width: 200px;
+        }
+        .content-col {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
 </h:head>
 
 <h:body>
-    <!-- activamos multipart para subir archivos -->
+    <!-- formulario centrado con multipart para subir archivos si fuera necesario -->
     <h:form id="formEditar" enctype="multipart/form-data">
         <p:growl id="msgs" showDetail="true" />
 
-        <div class="layout-grid">
+        <div class="container">
 
             <!-- Menú lateral -->
             <div class="menu-col">
-                <p:panel header="Opciones" style="width:200px; margin-bottom:20px;">
+                <p:panel header="Opciones" style="width:100%;">
                     <p:menu toggleable="false" style="width:100%;">
                         <p:menuitem value="Inicio"
                                     url="#{request.contextPath}/index.xhtml"
@@ -34,7 +50,7 @@
 
             <!-- Contenido: formulario de edición de perfil propio -->
             <div class="content-col">
-                <p:panel header="Mi Perfil" style="margin-top:20px;">
+                <p:panel header="Mi Perfil">
                     <p:panelGrid columns="2"
                                  columnClasses="label,value"
                                  cellpadding="5">
@@ -59,16 +75,6 @@
                         <p:inputText id="telefono"
                                      value="#{clienteMB.clienteSeleccionado.telefono}"
                                      label="Teléfono" />
-
-                        <!-- Nuevo campo para subir foto de perfil -->
-                        <h:outputLabel for="upload" value="Foto de perfil:" />
-                        <p:fileUpload id="upload"
-                                      fileUploadListener="#{clienteMB.handleFileUpload}"
-                                      mode="advanced"
-                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                      sizeLimit="2097152"
-                                      update="msgs"
-                                      label="Seleccionar..." />
 
                     </p:panelGrid>
 
