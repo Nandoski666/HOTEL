@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Mi Perfil</title>
+</h:head>
+
+<h:body>
+    <!-- activamos multipart para subir archivos -->
+    <h:form id="formEditar" enctype="multipart/form-data">
+        <p:growl id="msgs" showDetail="true" />
+
+        <div class="layout-grid">
+
+            <!-- Menú lateral -->
+            <div class="menu-col">
+                <p:panel header="Opciones" style="width:200px; margin-bottom:20px;">
+                    <p:menu toggleable="false" style="width:100%;">
+                        <p:menuitem value="Inicio"
+                                    url="#{request.contextPath}/index.xhtml"
+                                    icon="pi pi-home" />
+                        <p:menuitem value="Cerrar Sesión"
+                                    action="#{validarIngreso.logout}"
+                                    icon="pi pi-sign-out"
+                                    ajax="false"
+                                    update="@none" />
+                    </p:menu>
+                </p:panel>
+            </div>
+
+            <!-- Contenido: formulario de edición de perfil propio -->
+            <div class="content-col">
+                <p:panel header="Mi Perfil" style="margin-top:20px;">
+                    <p:panelGrid columns="2"
+                                 columnClasses="label,value"
+                                 cellpadding="5">
+
+                        <h:outputLabel for="id" value="ID Usuario:" />
+                        <h:outputText id="id"
+                                      value="#{clienteMB.clienteSeleccionado.id}" />
+
+                        <h:outputLabel for="nombre" value="Nombre:" />
+                        <p:inputText id="nombre"
+                                     value="#{clienteMB.clienteSeleccionado.nombre}"
+                                     required="true"
+                                     label="Nombre" />
+
+                        <h:outputLabel for="email" value="Email:" />
+                        <p:inputText id="email"
+                                     value="#{clienteMB.clienteSeleccionado.email}"
+                                     required="true"
+                                     label="Email" />
+
+                        <h:outputLabel for="telefono" value="Teléfono:" />
+                        <p:inputText id="telefono"
+                                     value="#{clienteMB.clienteSeleccionado.telefono}"
+                                     label="Teléfono" />
+
+                        <!-- Nuevo campo para subir foto de perfil -->
+                        <h:outputLabel for="upload" value="Foto de perfil:" />
+                        <p:fileUpload id="upload"
+                                      fileUploadListener="#{clienteMB.handleFileUpload}"
+                                      mode="advanced"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                      sizeLimit="2097152"
+                                      update="msgs"
+                                      label="Seleccionar..." />
+
+                    </p:panelGrid>
+
+                    <div style="text-align:right; margin-top:10px;">
+                        <p:commandButton value="Guardar Cambios"
+                                         action="#{clienteMB.actualizarCliente}"
+                                         update="msgs, formEditar"
+                                         icon="pi pi-save" />
+                    </div>
+                </p:panel>
+            </div>
+
+        </div>
+    </h:form>
+</h:body>
+</html>

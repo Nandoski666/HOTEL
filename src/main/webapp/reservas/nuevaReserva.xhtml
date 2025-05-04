@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Nueva Reserva</title>
+    <style>
+        .form-container {
+            width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .custom-panel {
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .custom-panelGrid .ui-panelgrid-cell {
+            padding: 10px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h:form id="form">
+        <p:growl id="growl" showDetail="true" />
+
+        <div class="form-container">
+            <p:panel header="Nueva Reserva" styleClass="custom-panel">
+                <p:panelGrid columns="2" styleClass="custom-panelGrid" style="width:100%">
+
+                    <p:outputLabel for="fechaInicio" value="Fecha de Inicio:" />
+                    <p:calendar id="fechaInicio"
+                                value="#{reservaMB.reservaNueva.fechaInicio}"
+                                pattern="yyyy-MM-dd"
+                                required="true"
+                                requiredMessage="Fecha de inicio es requerida" />
+
+                    <p:outputLabel for="fechaFin" value="Fecha de Fin:" />
+                    <p:calendar id="fechaFin"
+                                value="#{reservaMB.reservaNueva.fechaFin}"
+                                pattern="yyyy-MM-dd"
+                                required="true"
+                                requiredMessage="Fecha de fin es requerida" />
+
+                    <p:outputLabel for="estado" value="Estado:" />
+                    <p:inputText id="estado"
+                                 value="#{reservaMB.reservaNueva.estado}"
+                                 required="true"
+                                 requiredMessage="Estado es requerido" />
+
+                    <p:outputLabel for="numPersonas" value="Número de Personas:" />
+                    <p:inputNumber id="numPersonas"
+                                   value="#{reservaMB.numPersonas}"
+                                   minValue="1"
+                                   required="true"
+                                   requiredMessage="Número de personas es requerido" />
+
+                    <p:outputLabel for="tipoHabitacion" value="Tipo de Habitación:" />
+                    <p:selectOneMenu id="tipoHabitacion"
+                                     value="#{reservaMB.tipoHabitacion}"
+                                     required="true"
+                                     requiredMessage="Seleccione tipo de habitación">
+                        <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                        <f:selectItem itemLabel="Simple" itemValue="Simple" />
+                        <f:selectItem itemLabel="Doble" itemValue="Doble" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+
+                <div class="button-container">
+                    <p:commandButton value="Guardar"
+                                     action="#{reservaMB.guardarReservaNueva}"
+                                     ajax="false"
+                                     icon="pi pi-check"
+                                     style="margin-right:10px" />
+                    <p:commandButton value="Cancelar"
+                                     action="/reservas/listaReservas.xhtml?faces-redirect=true"
+                                     immediate="true"
+                                     icon="pi pi-times" />
+                </div>
+            </p:panel>
+        </div>
+    </h:form>
+</h:body>
+</html>

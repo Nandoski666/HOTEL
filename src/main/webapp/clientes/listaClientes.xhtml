@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+  <h:head>
+    <title>Gestión de Clientes</title>
+    <style type="text/css">
+      .header { font-weight: bold; font-size: 18px; }
+      .inactiva { color: #ff0000; }
+      .activa { color: #00aa00; }
+      .layout-grid { display: flex; gap: 20px; }
+      .menu-col { width: 200px; }
+      .table-col { flex: 1; }
+      .foto-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+    </style>
+  </h:head>
+
+  <h:body>
+    <!-- Invoca init() antes de renderizar la vista -->
+    <f:metadata>
+      <f:viewAction action="#{clienteMB.init}" onPostBack="false" />
+    </f:metadata>
+
+    <h:form id="form">
+      <p:growl id="growl" showDetail="true" />
+
+      <div class="layout-grid">
+
+        <!-- Menú a la izquierda -->
+        <div class="menu-col">
+          <p:panel header="Menú Opciones" style="width: 200px; margin-bottom: 20px;">
+            <p:menu toggleable="false" style="width: 100%;">
+              <p:menuitem value="Inicio" url="index.xhtml" icon="pi pi-home" />
+              <p:menuitem value="Cerrar Sesión"
+                          action="#{validarIngreso.logout}"
+                          icon="pi pi-sign-out"
+                          update="@none"
+                          ajax="false"/>
+            </p:menu>
+          </p:panel>
+        </div>
+
+        <!-- Tabla de clientes -->
+        <div class="table-col">
+          <p:panel header="Lista Clientes" style="margin-top:20px">
+            <p:dataTable id="dt-clientes"
+                         var="cliente"
+                         value="#{clienteMB.listaClientes}"
+                         paginator="true"
+                         rows="10"
+                         emptyMessage="No se encontraron clientes registrados">
+
+              <f:facet name="header">
+                <div class="header">Gestión de Clientes</div>
+              </f:facet>
+
+              <p:column headerText="ID Cliente">
+                <h:outputText value="#{cliente.id}" />
+              </p:column>
+
+              <p:column headerText="Nombre">
+                <h:outputText value="#{cliente.nombre}" />
+              </p:column>
+
+              <p:column headerText="Email">
+                <h:outputText value="#{cliente.email}" />
+              </p:column>
+
+              <p:column headerText="Teléfono">
+                <h:outputText value="#{cliente.telefono}" />
+              </p:column>
+
+              <!-- Nueva columna para la foto de perfil -->
+              <p:column headerText="Foto" style="text-align:center">
+                <h:panelGroup>
+                  <h:graphicImage 
+                    rendered="#{not empty cliente.fotoBase64}"
+                    value="data:image/png;base64,#{cliente.fotoBase64}"
+                    styleClass="foto-thumb" />
+                  <h:outputText 
+                    rendered="#{empty cliente.fotoBase64}"
+                    value="--" />
+                </h:panelGroup>
+              </p:column>
+
+            </p:dataTable>
+          </p:panel>
+        </div>
+
+      </div>
+    </h:form>
+  </h:body>
+</html>
